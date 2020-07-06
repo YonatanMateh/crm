@@ -2,7 +2,7 @@ import { observable, computed, action } from 'mobx';
 import { Client } from "./Client";
 import { ClientValue } from "../interfaces/client";
 import tempData from '../tempData.json';
-import {PopOverStoreData} from '../interfaces/popOver';
+import {PopOverClient} from '../interfaces/popOver';
 class ClientsStore {
     @observable clients: Client[];
     constructor() {
@@ -29,7 +29,7 @@ class ClientsStore {
         }
     }
 
-    @action updateClient = (data: PopOverStoreData) => {
+    @action updateClient = (data: PopOverClient) => {
         console.log('update this: ', data);
     }
 }
