@@ -1,6 +1,7 @@
 export  interface ClientValue {
     id: string,
-    name: string,
+    firstName: string,
+    lastName: string,
     email: string,
     firstContact: string,
     emailType?: string | null,

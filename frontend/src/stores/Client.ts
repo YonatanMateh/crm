@@ -1,7 +1,8 @@
 import { ClientValue } from "../interfaces/client";
 export class Client implements ClientValue {
     id: string;
-    name: string;
+    firstName: string;
+    lastName: string;
     email: string;
     firstContact: string;
     emailType: string | null | undefined;
@@ -10,10 +11,11 @@ export class Client implements ClientValue {
     country: string;
 
     constructor(client: ClientValue) {
-        const {id, name, email, firstContact,
+        const {id, firstName, lastName, email, firstContact,
             emailType, sold, owner, country} = client;
         this.id = id;
-        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.firstContact = firstContact;
         this.emailType = emailType;

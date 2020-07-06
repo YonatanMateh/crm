@@ -1,9 +1,8 @@
 import { observable, computed, action } from 'mobx';
-import { useContext, createContext } from "react";
 import { Client } from "./Client";
 import { ClientValue } from "../interfaces/client";
 import tempData from '../tempData.json';
-
+import {PopOverStoreData} from '../interfaces/popOver';
 class ClientsStore {
     @observable clients: Client[];
     constructor() {
@@ -21,8 +20,17 @@ class ClientsStore {
 
     @action clientsSetupDev() {
         for (let c of tempData) {
-            this.addClient(c);
+            const [firstName, lastName] = c.name.split(" ");
+            const {id, firstContact, email, emailType, sold, owner, country } = c;
+            const newClient: ClientValue = {
+                id, firstContact, email, emailType, sold, owner, country, firstName, lastName
+            }
+            this.addClient(newClient);
         }
+    }
+
+    @action updateClient = (data: PopOverStoreData) => {
+        console.log('update this: ', data);
     }
 }
 
@@ -30,16 +38,4 @@ class ClientsStore {
 
 
 
-interface IStores {
-    clientsStore: ClientsStore
-}
-
-export const stores: IStores = {
-    clientsStore: new ClientsStore()
-}
-
-export const StoresContext = createContext(stores);
-
-export const useStore = () => {
-    return useContext(StoresContext);
-};
+export default ClientsStore;

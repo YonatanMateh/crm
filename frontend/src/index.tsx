@@ -3,15 +3,15 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { stores, StoresContext } from "./stores/ClientsStore";
+import { stores, StoresContext } from "./stores/stores";
 import { BrowserRouter as Router } from "react-router-dom";
 ReactDOM.render(
   <React.StrictMode>
-   <Router>
+    <Router>
       <StoresContext.Provider value={stores}>
         <App />
       </StoresContext.Provider>
-   </Router>
+    </Router>
   </React.StrictMode>,
   document.getElementById('root')
 );
