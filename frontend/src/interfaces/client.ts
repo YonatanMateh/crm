@@ -9,3 +9,9 @@ export  interface ClientValue {
     owner: string,
     country: string,
 }
+
+
+export interface ClientNamesType {
+    id: string,
+    name: string
+}

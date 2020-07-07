@@ -18,7 +18,7 @@ const Clients: React.FC = (props: any) => {
     const { clientsStore } = useStore();
 
     return (
-      <>
+      <Paper className={classes.container} elevation={0}>
             <TableContainer component={Paper} className={classes.tableContainer}>
               <Table aria-label="simple table" >
                 <TableHead className={classes.tableHeader}>
@@ -40,7 +40,7 @@ const Clients: React.FC = (props: any) => {
               </Table>
             </TableContainer>
             <ClientPopOver />
-    </>
+    </Paper>
       );
 }
 
