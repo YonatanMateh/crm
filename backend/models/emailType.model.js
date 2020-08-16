@@ -1,18 +1,10 @@
-const { Sequelize, DataTypes } = require('sequelize');
-const db = require('../db/database');
+module.exports = (sequelize, DataTypes) => {
+    const { STRING, INTEGER } = DataTypes;
 
-const { STRING, INTEGER } = DataTypes;
-
-const EmailType = db.define('emailType', {
-    id: {
-        type: INTEGER,
-        allowNull: false,
-        primaryKey: true,
-        autoIncrement: true
-    },
-    emailType: {
-        type: STRING(10)
-    }
-});
-
-module.exports = EmailType;
+    const EmailType = sequelize.define('emailType', {
+        type: {
+            type: STRING(10)
+        }
+    });
+    return EmailType;
+}

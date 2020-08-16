@@ -1,18 +1,10 @@
-const { Sequelize, DataTypes } = require('sequelize');
-const db = require('../db/database');
+module.exports = (sequelize, DataTypes) => {
+    const { STRING, INTEGER } = DataTypes;
 
-const { STRING, INTEGER } = DataTypes;
-
-const Country = db.define('country', {
-    id: {
-        type: INTEGER,
-        allowNull: false,
-        primaryKey: true,
-        autoIncrement: true
-    },
-    country: {
-        type: STRING(30)
-    }
-});
-
-module.exports = Country;
+    const Country = sequelize.define('country', {
+        name: {
+            type: STRING(30)
+        }
+    });
+    return Country;
+}

@@ -1,4 +1,3 @@
-
 const clientService = require('../services/client.service');
 const tempData = require('./tempData.json');
 const createClient = async client => {
@@ -20,8 +19,6 @@ const migrateAllData = async () => {
         await clientService.createClient(client);
     }
 }
-
-
 
 module.exports = {
     createClient,
