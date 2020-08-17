@@ -7,13 +7,13 @@ import Actions from './actions/actions.component';
 const Routes: React.FC = () => {
     return (
         <Switch>
-            <Route exact path="/clients" >
+            <Route path="/clients" >
                 <Clients />
             </Route>
-            <Route exact path="/actions" >
+            <Route  path="/actions" >
                 <Actions />
             </Route>
-            <Route exact path="/analytics" >
+            <Route  path="/analytics" >
                 <Analytics />
             </Route>
             <Route exact path="/">

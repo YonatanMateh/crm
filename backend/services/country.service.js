@@ -11,6 +11,21 @@ const createCountry = async country => {
     return newCountry.dataValues;
 }
 
+const updateCountry = async (id, name) => {
+    try {
+        const existsCountry = await Country.findOne({where: {name}});
+        if(existsCountry) {
+            return existsCountry
+        } else {
+            const updateCountry = await Country.update({name}, {where: {id}});
+            return updateCountry;
+        }
+    } catch (error) {
+        
+    }
+}
+
 module.exports = {
-    createCountry
+    createCountry,
+    updateCountry
 }

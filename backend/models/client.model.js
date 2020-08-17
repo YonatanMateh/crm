@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const { STRING, INTEGER, BOOLEAN, DATE } = DataTypes;
+    const { STRING, INTEGER, BOOLEAN, DATE, NOW } = DataTypes;
     const Client = sequelize.define('client', {
         id: {
             type: INTEGER,
@@ -14,10 +14,12 @@ module.exports = (sequelize, DataTypes) => {
             type: STRING(30)
         },
         firstContact: {
-            type: DATE
+            type: DATE,
+            defaultValue: NOW
         },
         sold: {
-            type: BOOLEAN
+            type: BOOLEAN,
+            defaultValue: false
         }
     });
     return Client;
