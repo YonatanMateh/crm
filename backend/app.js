@@ -3,7 +3,9 @@ const bodyParser = require('body-parser');
 const routes = require('./routes/index');
 const config = require('./config/index');
 const db = require('./db/connection');
-const allowCors = require('./utils/allowCors');
+const allowCors = require('./middlewares/allowCors');
+const errorHandler = require('./middlewares/errorHandlers');
+const {AppError} = require('./utils/AppError')
 // const clientsMigration = require('./utils/clientsMigration');
 
 const app = express();
@@ -14,6 +16,11 @@ if(config.environment === "development") {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use('/', routes);
+app.all('*', (req, res, next) => {
+    next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
+});
+
+app.use(errorHandler);
 
 (async () => {
     try {
