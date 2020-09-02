@@ -10,7 +10,7 @@ const { sequelize } = db;
 const { Op } = db.Sequelize;
 
 const getPagination = (page, size) => {
-    const limit = size ? +size : 3;
+    const limit = size ? +size : 25;
     const offset = page ? page * limit : 0;
 
     return { limit, offset };
@@ -28,18 +28,31 @@ const getCondition = (searchBy, searchText) => {
     let defaultCondition = {};
     let countryCondition = {};
     let ownerCondition = {};
+    let emailCondition = null;
+
     if (searchBy && searchText) {
         switch (searchBy) {
-            case "countryName":
+            case "Name":
+                defaultCondition = {
+                    [Op.or]: [
+                        { firstName: { [Op.like]: `%${searchText}%` } },
+                        { lastName: { [Op.like]: `%${searchText}%` } }
+                    ]
+                }
+                break;
+            case "Country":
                 countryCondition = { name: { [Op.like]: `%${searchText}%` } }
                 break;
-            case "owner":
+            case "Owner":
                 ownerCondition = {
                     [Op.or]: [
                         { firstName: { [Op.like]: `%${searchText}%` } },
                         { lastName: { [Op.like]: `%${searchText}%` } }
                     ]
                 }
+                break;
+                case "Email": 
+                emailCondition = { type: { [Op.like]: `%${searchText}%` } }
                 break;
             default:
                 defaultCondition = { [searchBy]: { [Op.like]: `%${searchText}%` } }
@@ -50,13 +63,16 @@ const getCondition = (searchBy, searchText) => {
     return {
         defaultCondition,
         countryCondition,
-        ownerCondition
+        ownerCondition,
+        emailCondition
+        
     }
 }
 
 const getClients = async (page, size, searchBy, searchText) => {
     const { limit, offset } = getPagination(page, size);
     const {
+        emailCondition,
         defaultCondition,
         countryCondition,
         ownerCondition } = getCondition(searchBy, searchText);
@@ -72,13 +88,19 @@ const getClients = async (page, size, searchBy, searchText) => {
             "sold",
             "firstContact",
             "countryId",
+            "email",
+            // "emailType",
             [db.Sequelize.col("country.name"), "countryName"],
-            [db.Sequelize.col("emailType.type"), "emailType"],
+            [db.Sequelize.col("emailType.type"), "email_type"]
         ],
         include: [
             { model: db.countries, attributes: [], where: countryCondition },
-            { model: db.emailTypes, attributes: [] },
+            { model: db.emailTypes, attributes: [], where: emailCondition },
             { model: db.owners, attributes: ["firstName", "lastName"], where: ownerCondition },
+
+            // { model: db.countries, attributes: [], where: countryCondition },
+            // { model: db.emailTypes, attributes: [], where: emailCondition },
+            // { model: db.owners, attributes: ["firstName", "lastName"], where: ownerCondition },
         ],
         nested: true
     })

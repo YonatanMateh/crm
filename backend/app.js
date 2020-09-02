@@ -6,7 +6,7 @@ const db = require('./db/connection');
 const allowCors = require('./middlewares/allowCors');
 const errorHandler = require('./middlewares/errorHandlers');
 const {AppError} = require('./utils/AppError')
-// const clientsMigration = require('./utils/clientsMigration');
+const clientsMigration = require('./utils/clientsMigration');
 
 const app = express();
 
@@ -31,7 +31,7 @@ app.use(errorHandler);
         console.log('Connection has been established successfully.');
         // db.sequelize.sync({ force: true }).then(async() => {
         //     console.log("Drop and re-sync db.");
-        //     // await clientsMigration.migrateAllData()
+        //     await clientsMigration.migrateAllData()
         //   }).catch(err=> {
         //       console.log(err);
         //   }) ;

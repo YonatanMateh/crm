@@ -5,6 +5,7 @@ import TableRow from '@material-ui/core/TableRow';
 import { Check, Remove } from '@material-ui/icons';
 import { ClientValue } from '../../interfaces/client';
 import { useStore } from '../../stores/stores';
+
 const ClientCell: React.FC<ClientValue> = (props) => {
     const { popOverStore } = useStore();
     const rowClicked = () => {
@@ -14,12 +15,12 @@ const ClientCell: React.FC<ClientValue> = (props) => {
     return (
         <TableRow onClick={rowClicked}>
             <TableCell>{props.firstName}</TableCell>
-            <TableCell>{props.country}</TableCell>
             <TableCell>{props.lastName}</TableCell>
+            <TableCell>{props.country}</TableCell>
             <TableCell>{props.firstContact}</TableCell>
             <TableCell>{props.emailType ? props.emailType : <Remove />}</TableCell>
             <TableCell>{props.sold ? <Check /> : <Remove />}</TableCell>
-            <TableCell>{props.owner}</TableCell>
+            <TableCell>{props.owner.firstName} {props.owner.lastName}</TableCell>
         </TableRow>
     )
 }

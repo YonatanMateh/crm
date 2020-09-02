@@ -1,4 +1,4 @@
-const clientService = require('../services/client.service');
+const clientService = require('../services/client.update.service');
 const tempData = require('./tempData.json');
 const createClient = async client => {
     await clientService.createClient(client);
@@ -16,7 +16,7 @@ const migrateAllData = async () => {
             lastName: oLastName.trim()
         }
         delete client.name;
-        await clientService.createClient(client);
+        await clientService.createClientForDataMigration(client);
     }
 }
 

@@ -6,13 +6,13 @@ import * as serviceWorker from './serviceWorker';
 import { stores, StoresContext } from "./stores/stores";
 import { BrowserRouter as Router } from "react-router-dom";
 ReactDOM.render(
-  <React.StrictMode>
+  <React.Fragment>
     <Router>
       <StoresContext.Provider value={stores}>
         <App />
       </StoresContext.Provider>
     </Router>
-  </React.StrictMode>,
+  </React.Fragment>,
   document.getElementById('root')
 );
 

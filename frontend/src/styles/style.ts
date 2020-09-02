@@ -1,6 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-
 export const useStyles = makeStyles({
   navBar: {
     background: '#0a1612',
@@ -19,14 +18,22 @@ export const useStyles = makeStyles({
 export const useClientsStyle = makeStyles({
   container: {
     padding: '15px',
-    backgroundColor: "#ecf0f1"
+    backgroundColor: "#ecf0f1",
   },
   tableContainer: {
-    backgroundColor: "transparent"
+    backgroundColor: "transparent",
+    height: "80vh"
   },
   tableHeader: {
     backgroundColor: "#F7CE3E",
     boxShadow: "0px 3px 2px grey"
+  },
+  tableNav: {
+    display: 'grid',
+    gridTemplateColumns: "1fr 1fr 3fr",
+    margin: "5px 0",
+    backgroundColor: "transparent",
+    gridGap: "20px"
   },
   modal: {
     display: 'flex',
@@ -70,7 +77,7 @@ export const useClientsStyle = makeStyles({
 
 export const useUpdateStyle = makeStyles({
   container: {
-    backgroundColor: "#ecf0f1", 
+    backgroundColor: "#ecf0f1",
     padding: '25px',
     paddingTop: '50px'
   },
@@ -79,7 +86,6 @@ export const useUpdateStyle = makeStyles({
   },
   actionButton: {
     color: '#F7CE3E',
-justifyContent: "left"
+    justifyContent: "left"
   }
 })
-

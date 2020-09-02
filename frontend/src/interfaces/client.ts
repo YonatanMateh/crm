@@ -3,10 +3,10 @@ export  interface ClientValue {
     firstName: string,
     lastName: string,
     email: string,
-    firstContact: string,
+    firstContact: Date,
     emailType?: string | null,
     sold: boolean,
-    owner: string,
+    owner: any,
     country: string,
 }
 

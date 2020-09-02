@@ -4,15 +4,14 @@ export class Client implements ClientValue {
     firstName: string;
     lastName: string;
     email: string;
-    firstContact: string;
+    firstContact: Date;
     emailType: string | null | undefined;
     sold: boolean;
-    owner: string;
+    owner: any;
     country: string;
 
-    constructor(client: ClientValue) {
-        const {id, firstName, lastName, email, firstContact,
-            emailType, sold, owner, country} = client;
+    constructor(id: string, firstName: string, lastName:string, email:string, firstContact: Date,
+        emailType:string, sold: boolean, owner: any, country: string) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

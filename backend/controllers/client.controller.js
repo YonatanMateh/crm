@@ -49,6 +49,7 @@ const mostSalesByCountry = asyncError (async (req, res, next) => {
     const data = await getClientService.mostSalesByCountry();
     res.send(data)
 })
+
 module.exports = {
     getClients,
     countByDate,

@@ -20,6 +20,9 @@ module.exports = (sequelize, DataTypes) => {
         sold: {
             type: BOOLEAN,
             defaultValue: false
+        },
+        email: {
+            type: STRING(50)
         }
     });
     return Client;

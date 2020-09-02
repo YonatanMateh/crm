@@ -87,5 +87,6 @@ const createClientForDataMigration = async client => {
 module.exports = {
     createClient,
     updateClientAndCountry,
-    updateClientField
+    updateClientField,
+    createClientForDataMigration
 }
