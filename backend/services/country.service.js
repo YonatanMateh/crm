@@ -15,10 +15,16 @@ const updateCountry = async (id, name) => {
     try {
         const existsCountry = await Country.findOne({where: {name}});
         if(existsCountry) {
-            return existsCountry
+            return existsCountry.dataValues;
         } else {
-            const updateCountry = await Country.update({name}, {where: {id}});
-            return updateCountry;
+            const updateCountry = await Country.findByPk(id);
+            if(updateCountry) {
+                await updateCountry.update({name})
+                return updateCountry;
+            } else {
+                throw new AppError("Can't find country id", 500)
+            }
+            // const updateCountry = await Country.update({name}, {where: {id}, returning: true});
         }
     } catch (error) {
         

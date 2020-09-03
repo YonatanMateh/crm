@@ -8,8 +8,8 @@ export  interface ClientValue {
     sold: boolean,
     owner: any,
     country: string,
+    countryId: number
 }
-
 
 export interface ClientNamesType {
     id: string,

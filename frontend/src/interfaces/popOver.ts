@@ -1,11 +1,4 @@
-export interface PopOverClient {
-    [id: string]: string,
-    firstName: string,
-    lastName: string,
-    country: string
-}
-
-export type clientKeysType = 'id' | 'firstName' | 'lastName' | 'country';
+export type clientKeysType =  'firstName' | 'lastName' | 'country';
 export interface StyleClass {
   [name: string] : string
 }
@@ -15,6 +8,6 @@ export interface InputFunc {
 export interface GridFormProps {
   classes: StyleClass,
   clientKey: clientKeysType,
-  value: string,
+  value: string | number,
   inputChange: InputFunc
 }

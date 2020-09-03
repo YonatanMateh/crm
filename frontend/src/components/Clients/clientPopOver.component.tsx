@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, Modal, Card, Button, CardActions, CardContent, Grid, Input, IconButton } from '@material-ui/core';
-
 import { observer } from "mobx-react";
 import { CancelPresentationOutlined } from '@material-ui/icons';
 import { useStore } from '../../stores/stores';
 import { useClientsStyle } from '../../styles/style';
-import { PopOverClient, clientKeysType, GridFormProps } from '../../interfaces/popOver';
+import { clientKeysType, GridFormProps } from '../../interfaces/popOver';
 
 const GridForm: React.FC<GridFormProps> = ({ classes, clientKey, value, inputChange }) => {
   const capitalized = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
@@ -18,31 +17,38 @@ const GridForm: React.FC<GridFormProps> = ({ classes, clientKey, value, inputCha
 }
 
 const ClientPopOver: React.FC = observer(() => {
-  const { popOverStore, clientsStore } = useStore();
-  const { data: { id, firstName, lastName, country } } = popOverStore;
-  const [client, setClient] = useState<PopOverClient>({
-    id, firstName, lastName, country
+  const { popOverStore } = useStore();
+  const popOverClient = popOverStore.client;
+  const [client, setClient] = useState({
+    firstName: popOverClient ? popOverClient!.firstName : '',
+    lastName: popOverClient ? popOverClient!.lastName : '',
+    country: popOverClient ? popOverClient!.country : ''
   });
 
   const classes = useClientsStyle();
+  const keys: clientKeysType[] = ['firstName', 'lastName', 'country'];
   const BackdropComponent = () => (
     <div className={classes.backDrop} onClick={popOverStore.closePopOver}></div>
   )
 
   const inputChanged = (key: clientKeysType, value: string) => {
-    const updatedClient: PopOverClient = { ...client };
+    const updatedClient = { ...client };
     updatedClient[key] = value;
     setClient(updatedClient)
   }
 
-  const keys: clientKeysType[] = ['firstName', 'lastName', 'country'];
-
   useEffect(() => {
     setClient({
-      id, firstName, lastName, country
+      firstName: popOverClient ? popOverClient!.firstName : '',
+      lastName: popOverClient ? popOverClient!.lastName : '',
+      country: popOverClient ? popOverClient!.country : ''
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id])
+  }, [popOverClient])
+
+  const update = () => {
+    popOverClient!.update(client.firstName, client.lastName, client.country)
+    popOverStore.closePopOver()
+  }
   return (
     <Modal
       BackdropComponent={BackdropComponent}
@@ -63,7 +69,7 @@ const ClientPopOver: React.FC = observer(() => {
         </CardContent>
 
         <CardActions>
-          <Button onClick={() => clientsStore.updateClient(client)} size="medium" className={classes.updateBtn} fullWidth disableFocusRipple={true} disableElevation>Update</Button>
+          <Button onClick={update} size="medium" className={classes.updateBtn} fullWidth disableFocusRipple={true} disableElevation>Update</Button>
         </CardActions>
       </Card>
     </Modal>

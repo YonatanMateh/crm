@@ -1,7 +1,6 @@
 import { observable, action } from 'mobx';
-import { Client } from "../classes/Client";
+import { Client } from "./Client";
 import { ClientNamesType } from "../interfaces/client";
-import { PopOverClient } from '../interfaces/popOver';
 import { serverUrl } from '../config/generalConfig';
 import { IQuery } from '../interfaces/navigation';
 import axios from 'axios';
@@ -10,7 +9,7 @@ class ClientsStore {
     @observable clientNames: ClientNamesType[] = [];
     @observable owners: ClientNamesType[] = [];
     @observable emails: string[];
-    
+
     totalClients: number = 0;
     totalPages: number = 0;
     constructor() {
@@ -19,9 +18,9 @@ class ClientsStore {
 
     @action addClient(client: any) {
         const { id, firstName, lastName, email, firstContact,
-            sold, owner, countryName, email_type } = client;
+            sold, owner, countryName, email_type, countryId } = client;
         const newClient = new Client(id, firstName, lastName, email, firstContact,
-            email_type, sold, owner, countryName);
+            email_type, sold, owner, countryName, countryId);
         this.clients.push(newClient)
     }
 
@@ -33,11 +32,15 @@ class ClientsStore {
         data.clients.forEach((c: any) => this.addClient(c));
     }
 
-    @action updateClient = (data: PopOverClient) => {
-        console.log('update this: ', data);
+    @action updateCountryLocally = (countryId: number, newCountryName: string) => {
+        this.clients.forEach((client: Client) => {
+            if (client.countryId === countryId) {
+                client.country = newCountryName;
+            }
+        })
     }
 
-   private getUrlWithQueryParams = (query: IQuery): string => {
+    private getUrlWithQueryParams = (query: IQuery): string => {
         const { page, size, searchBy, searchText } = query;
         const searchRoute = searchBy && searchText ? `&searchText=${searchText}&searchBy=${searchBy}` : "";
         return `${serverUrl}/api/clients?page=${page}&size=${size}${searchRoute}`

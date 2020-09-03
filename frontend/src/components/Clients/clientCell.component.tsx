@@ -3,26 +3,29 @@ import React from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import { Check, Remove } from '@material-ui/icons';
-import { ClientValue } from '../../interfaces/client';
 import { useStore } from '../../stores/stores';
-
-const ClientCell: React.FC<ClientValue> = (props) => {
+import { Client } from '../../stores/Client';
+import { observer } from 'mobx-react';
+interface T {
+    client: Client 
+}
+const ClientCell: React.FC<T> = observer((props) => {
     const { popOverStore } = useStore();
+    const {client} = props
     const rowClicked = () => {
-        const {id, country, lastName, firstName } = props;
-        popOverStore.openPopOver({id, country, lastName, firstName })
+        popOverStore.openPopOver(props.client)
     }
     return (
         <TableRow onClick={rowClicked}>
-            <TableCell>{props.firstName}</TableCell>
-            <TableCell>{props.lastName}</TableCell>
-            <TableCell>{props.country}</TableCell>
-            <TableCell>{props.firstContact}</TableCell>
-            <TableCell>{props.emailType ? props.emailType : <Remove />}</TableCell>
-            <TableCell>{props.sold ? <Check /> : <Remove />}</TableCell>
-            <TableCell>{props.owner.firstName} {props.owner.lastName}</TableCell>
+            <TableCell>{client.firstName}</TableCell>
+            <TableCell>{client.lastName}</TableCell>
+            <TableCell>{client.country}</TableCell>
+            <TableCell>{client.firstContact}</TableCell>
+            <TableCell>{client.emailType ? client.emailType : <Remove />}</TableCell>
+            <TableCell>{client.sold ? <Check /> : <Remove />}</TableCell>
+            <TableCell>{client.owner.firstName} {client.owner.lastName}</TableCell>
         </TableRow>
     )
-}
+})
 
 export default ClientCell;

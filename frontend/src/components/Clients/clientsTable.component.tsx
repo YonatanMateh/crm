@@ -8,7 +8,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import ClientCell from './clientCell.component';
 import { useClientsStyle } from '../../styles/style';
-import { Client } from '../../classes/Client';
+import { Client } from '../../stores/Client';
 
 
 const ClientsTable = (props: {clients: Client[]}) => {
@@ -30,7 +30,7 @@ const ClientsTable = (props: {clients: Client[]}) => {
           </TableHead>
           <TableBody>
             { clients.map((row, i) => (
-              <ClientCell {...row} key={i} />
+              <ClientCell client={row} key={i} />
             ))}
           </TableBody>
         </Table>

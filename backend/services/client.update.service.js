@@ -3,6 +3,8 @@ const ownerService = require('./owner.service');
 const countryService = require('./country.service');
 const emailTypeService = require('./emailType.service');
 const { updateCountry } = require('./country.service');
+const { sequelize } = require('../db/connection');
+const AppError = require('../utils/AppError');
 
 const Client = db.clients;
 
@@ -11,7 +13,7 @@ const { Op } = db.Sequelize;
 const updateClientField = async (client, fieldToUpdate) => {
     try {
         const updatedClient = await Client.update({
-         [fieldToUpdate]: client[fieldToUpdate]
+            [fieldToUpdate]: client[fieldToUpdate]
         }, {
             where: {
                 id: client.id
@@ -26,18 +28,18 @@ const updateClientField = async (client, fieldToUpdate) => {
 
 const updateClientAndCountry = async (client) => {
     try {
-        const country = await countryService.updateCountry(client.countryId, client.countryName);
-        const updatedClient = await Client.update({
-            firstName: client.firstName,
-            lastName: client.lastName,
-            countryId: country.id,
-        }, {
-            where: {
-                id: client.id
-            }
+        const country = await countryService.updateCountry(client.countryId, client.country);
+        const updatedClient = await Client.findByPk(client.id)
+        if (updatedClient) {
+            await updatedClient.update({
+                firstName: client.firstName,
+                lastName: client.lastName,
+                countryId: country.id
+            });
+            return {...updatedClient.dataValues, country: country.name};
+        } else {
+            throw new AppError("Can't find client id", 500)
         }
-        );
-        return updatedClient;
     } catch (error) {
         console.error(error);
     }

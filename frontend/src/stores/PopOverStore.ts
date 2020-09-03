@@ -1,35 +1,18 @@
+import { Client } from './Client';
 import { observable, action } from 'mobx';
-import {PopOverClient} from '../interfaces/popOver';
 
 class PopOverStore {
     @observable isOpen = false;
-    @observable data: PopOverClient;
+    @observable client: Client | undefined;
 
-    constructor() {
-        this.data = {
-            id: '',
-            firstName: '',
-            lastName: '',
-            country: ''
-        }
-    }
-    @action openPopOver = (popOverData: PopOverClient) => {
+    @action openPopOver = (currentClient: Client) => {
         this.isOpen = true;
-        this.data = popOverData;
+        this.client = currentClient;
     }
-
-    @action closePopOver = () =>{
+    @action closePopOver = () => {
         this.isOpen = false;
-        this.data.id = '';
+        this.client = undefined;
     }
-
-    @action updateData = (key: string, value: string) => {
-        debugger
-        if(this.data.id) {
-            this.data[key] = value;
-        }
-    }
- 
 }
 
 
