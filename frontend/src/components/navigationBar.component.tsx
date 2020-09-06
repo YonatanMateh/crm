@@ -23,7 +23,7 @@ const NavigationBar: React.FC = () => {
         } else {
             linkTo = tabsToLink[currentTab];
         }
-        history.push(linkTo)
+        history.push(linkTo)        
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentTab]);
 

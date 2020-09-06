@@ -14,8 +14,8 @@ export const useClientsQuery = (): IQuery => {
     const searchText = query.get("searchText");
 
     return {
-        page: page ? parseInt(page) : 0,
-        size: size ? parseInt(size) : 25,
+        page: page ? parseInt(page) : null,
+        size: size ? parseInt(size) : null,
         searchBy,
         searchText
     };

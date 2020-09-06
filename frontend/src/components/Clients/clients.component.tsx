@@ -6,7 +6,7 @@ import { observer } from 'mobx-react';
 import { useStore } from '../../stores/stores';
 import { useClientsStyle } from '../../styles/style';
 import { useClientsQuery } from '../../hooks/urlNavigation';
-import {useDebounce} from '../../hooks/use-debounce';
+import { useDebounce } from '../../hooks/use-debounce';
 import ClientPopOver from './clientPopOver.component';
 import ClientsTable from './clientsTable.component';
 import Loader from '../loader.component';
@@ -16,12 +16,11 @@ const Clients: React.FC = observer(() => {
   const classes = useClientsStyle();
   const { clientsStore } = useStore();
   const history = useHistory()
-  const [currentPage, setCurrentPage] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState<number>(query.page || 0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(query.size || 25);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [searchText, setSearchText] = useState<string>(query.searchText || "");
   const [searchBy, setSearchBy] = useState<string>(query.searchBy || "Name");
-  
   const debouncedSearchText = useDebounce(searchText, 500);
 
   const searchFields = ["Name", "Sold", "Email", "Owner", "Country"]
@@ -55,12 +54,16 @@ const Clients: React.FC = observer(() => {
   // render when route changed
   useEffect(() => {
     (async () => {
-     await loadData();
+      if (query.page != null && query.size) {
+        await loadData();
+      } else {
+        updateQuery()
+      }
     })()
   }, [history.location.search]);
 
   useEffect(() => {
-   updateQuery()
+    updateQuery()
   }, [currentPage, rowsPerPage, searchBy, debouncedSearchText])
 
   return (
