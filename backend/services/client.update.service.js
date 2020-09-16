@@ -85,10 +85,23 @@ const createClientForDataMigration = async client => {
     return newClient;
 }
 
+const updateClientForField = async(clientId, fieldName, text) => {
+    const client = await Client.findByPk(clientId);
+    // client[fieldName] = text;
+    console.log(client);
+    await client.update({
+        [fieldName]: text
+    });
+    return client;
+
+
+}
+
 
 module.exports = {
     createClient,
     updateClientAndCountry,
     updateClientField,
-    createClientForDataMigration
+    createClientForDataMigration,
+    updateClientForField
 }

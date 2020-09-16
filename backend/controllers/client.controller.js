@@ -3,6 +3,11 @@ const getClientService = require('../services/client.get.service');
 const updateClientService = require('../services/client.update.service');
 const asyncError = require('../utils/asyncError');
 
+const updateClient = asyncError( async(req, res, next) => {
+    const {id, field, text} = req.body
+    const client = await updateClientService.updateClientForField(id, field, text);
+    res.send(client);
+})
 const updateNameAndCountry = asyncError (async (req, res, next) => {
     const data = await updateClientService.updateClientAndCountry(req.body);
     res.send(data);
@@ -50,6 +55,13 @@ const mostSalesByCountry = asyncError (async (req, res, next) => {
     res.send(data)
 })
 
+const clientsNames = asyncError(async (req, res, next) => {
+    const firstName = req.query.f;
+    const lastName = req.query.l;
+    const data = await getClientService.clientsNames(firstName, lastName);
+    res.send(data)
+})
+
 module.exports = {
     getClients,
     countByDate,
@@ -59,5 +71,7 @@ module.exports = {
     changeSoldStatus,
     countEmailSent,
     countNotSold,
-    mostSalesByCountry
+    mostSalesByCountry,
+    clientsNames,
+    updateClient
 }

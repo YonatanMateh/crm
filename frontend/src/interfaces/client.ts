@@ -11,7 +11,7 @@ export  interface ClientValue {
     countryId: number
 }
 
-export interface ClientNamesType {
-    id: string,
+export interface NamesType {
+    id: number,
     name: string
 }

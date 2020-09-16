@@ -1,10 +1,4 @@
 const db = require('../db/connection');
-const ownerService = require('./owner.service');
-const countryService = require('./country.service');
-const emailTypeService = require('./emailType.service');
-const { updateCountry } = require('./country.service');
-const { emailTypes } = require('../db/connection');
-
 const Client = db.clients;
 const { sequelize } = db;
 const { Op } = db.Sequelize;
@@ -89,7 +83,6 @@ const getClients = async (page, size, searchBy, searchText) => {
             "firstContact",
             "countryId",
             "email",
-            // "emailType",
             [db.Sequelize.col("country.name"), "countryName"],
             [db.Sequelize.col("emailType.type"), "email_type"]
         ],
@@ -97,12 +90,10 @@ const getClients = async (page, size, searchBy, searchText) => {
             { model: db.countries, attributes: [], where: countryCondition },
             { model: db.emailTypes, attributes: [], where: emailCondition },
             { model: db.owners, attributes: ["firstName", "lastName"], where: ownerCondition },
-
-            // { model: db.countries, attributes: [], where: countryCondition },
-            // { model: db.emailTypes, attributes: [], where: emailCondition },
-            // { model: db.owners, attributes: ["firstName", "lastName"], where: ownerCondition },
         ],
-        nested: true
+        nested: true,
+        order: [[sequelize.col('firstName'), "ASC"]]
+
     })
     const response = getPagingData(data, page, limit);
 
@@ -156,10 +147,27 @@ const mostSalesByCountry = async () => {
     })
     return countries[0];
 }
+
+const clientsNames = async (firstName, lastName) => {
+    const clients = await Client.findAll({
+        attributes: ["id", 
+        [sequelize.fn('CONCAT', sequelize.col('firstName'), ' ', sequelize.col('lastName')), 'name']],
+        where: {
+            [Op.and]: [
+                { firstName: { [Op.like]: `${firstName}%` } },
+                { lastName: { [Op.like]: `${lastName}%` } }
+            ] 
+        },
+        limit: 10,
+        order: [[sequelize.col('name'), "ASC"]]
+    });
+    return clients
+}
 module.exports = {
     getClients,
     countOfClientsForMonthYear,
     countEmailSent,
     countNotSold,
-    mostSalesByCountry
+    mostSalesByCountry,
+    clientsNames
 }

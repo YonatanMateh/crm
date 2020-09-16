@@ -1,19 +1,22 @@
+import { IIds } from './../interfaces/action';
 import { observable, action } from 'mobx';
 import { Client } from "./Client";
-import { ClientNamesType } from "../interfaces/client";
+import { NamesType } from "../interfaces/client";
 import { serverUrl } from '../config/generalConfig';
 import { IQuery } from '../interfaces/navigation';
 import axios from 'axios';
 class ClientsStore {
     @observable clients: Client[] = [];
-    @observable clientNames: ClientNamesType[] = [];
-    @observable owners: ClientNamesType[] = [];
-    @observable emails: string[];
+    @observable clientNames: NamesType[] = [];
+    @observable owners: NamesType[] = [];
+    @observable emails: NamesType[] = [];
 
     totalClients: number = 0;
     totalPages: number = 0;
     constructor() {
-        this.emails = ['A', 'B', 'C', 'D'];
+        (async () => {
+            await this.getEmailTypes()
+        })()
     }
 
     @action addClient(client: any) {
@@ -38,6 +41,28 @@ class ClientsStore {
                 client.country = newCountryName;
             }
         })
+    }
+
+    @action updateClientField = async (id: number, field: keyof IIds, text: number | boolean) => {
+        if (text > 0 && id > 0) {
+            const data = {
+                id,
+                field,
+                text
+            }
+            await axios.put(`${serverUrl}/api/clients/update`, data)
+        }
+    }
+
+    @action getClientsNames = async (searchText: string) => {
+        const [firstName, lastName] = searchText.split(' ');
+        const { data } = await axios.get(`${serverUrl}/api/clients/names?f=${firstName || ''}&l=${lastName || ''}`);
+        this.clientNames = data;
+    }
+
+    @action getEmailTypes = async () => {
+        const { data } = await axios.get(`${serverUrl}/api/emailType`);
+        this.emails = data
     }
 
     private getUrlWithQueryParams = (query: IQuery): string => {

@@ -15,7 +15,7 @@ if(config.environment === "development") {
 }
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use('/', routes);
+app.use('/api', routes);
 app.all('*', (req, res, next) => {
     next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });

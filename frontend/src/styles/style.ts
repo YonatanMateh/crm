@@ -89,3 +89,20 @@ export const useUpdateStyle = makeStyles({
     justifyContent: "left"
   }
 })
+
+export const useUpdateAutocomplete = makeStyles({
+  option: {
+    padding: 0
+  }
+}, { name: 'MuiAutocomplete' });
+
+
+export const useOptionStyle = makeStyles({
+  option: {
+    width: "100%",
+    paddingTop: 6,
+    paddingBottom: 6,
+    paddingLeft: 16,
+    paddingRight: 16
+  }
+})
