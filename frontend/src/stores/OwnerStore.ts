@@ -6,10 +6,9 @@ import { serverUrl } from '../config/generalConfig';
 class Owner {
     @observable owners: NamesType[] = [];
 
-    @action getOwners = async(searchText: string) => {
-        const [firstName, lastName] = searchText.split(' ');        
-        const {data} = await axios.get(`${serverUrl}/api/owner/?f=${firstName || ''}&l=${lastName || ''}`);           
-           this.owners = data;
+    @action getOwners = async (searchText: string) => {
+        const { data } = await axios.get(`${serverUrl}/api/owner/?s=${searchText || ''}`);
+        this.owners = data;
     }
 
 }

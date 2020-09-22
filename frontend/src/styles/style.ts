@@ -45,12 +45,6 @@ export const useClientsStyle = makeStyles({
     backgroundColor: "rgba(0,0,0, 0.8)",
     padding: '8px'
   },
-  updateBtn: {
-    backgroundColor: "#F7CE3E",
-    "&:hover": {
-      backgroundColor: "#F7CE3E"
-    }
-  },
   backDrop: {
     backgroundColor: 'transparent',
     zIndex: -1,
@@ -60,29 +54,19 @@ export const useClientsStyle = makeStyles({
     top: 0,
     left: 0
   },
-  popOverText: {
-    color: 'white'
-  },
   cardContext: {
     padding: "8px"
-  },
-  underline: {
-    borderBottom: "2px solid rgba(255, 255, 255, 0.85)",
-    "&:hover": {
-      borderBottom: "2px solid rgba(255, 255, 255, 0.85)",
-    }
   }
 });
 
 
-export const useUpdateStyle = makeStyles({
+export const useActionsStyle = makeStyles({
   container: {
     backgroundColor: "#ecf0f1",
-    padding: '25px',
-    paddingTop: '50px'
+    padding: '25px'
   },
   grid: {
-    marginTop: '20px'
+    marginTop: '10px'
   },
   actionButton: {
     color: '#F7CE3E',

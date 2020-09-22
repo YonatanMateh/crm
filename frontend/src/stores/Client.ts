@@ -12,12 +12,12 @@ export class Client implements ClientValue {
     @observable firstContact: Date;
     @observable emailType: string | null | undefined;
     @observable sold: boolean;
-    @observable owner: any;
+    @observable owner: string;
     @observable country: string;
     @observable countryId: number;
 
     constructor(id: string, firstName: string, lastName: string, email: string, firstContact: Date,
-        emailType: string, sold: boolean, owner: any, country: string, countryId: number) {
+        emailType: string, sold: boolean, owner: string, country: string, countryId: number) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

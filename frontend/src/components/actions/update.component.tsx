@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useMemo } from 'react';
 import { Typography, Paper, Grid } from '@material-ui/core';
-import { useUpdateStyle } from '../../styles/style';
+import { useActionsStyle } from '../../styles/style';
 import { useStore } from '../../stores/stores';
 import { observer } from 'mobx-react';
 import UpdateForm from './UpdateForm.component';
@@ -23,7 +23,7 @@ const Update: React.FC = observer(() => {
         emailTypeId: -1,
         sold: false
     })
-    const styles = useUpdateStyle();
+    const styles = useActionsStyle();
     const { clientsStore, ownerStore } = useStore();
 
     useEffect(() => {

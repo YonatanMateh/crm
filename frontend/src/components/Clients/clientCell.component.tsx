@@ -23,7 +23,7 @@ const ClientCell: React.FC<T> = observer((props) => {
             <TableCell>{client.firstContact}</TableCell>
             <TableCell>{client.emailType ? client.emailType : <Remove />}</TableCell>
             <TableCell>{client.sold ? <Check /> : <Remove />}</TableCell>
-            <TableCell>{client.owner.firstName} {client.owner.lastName}</TableCell>
+            <TableCell>{client.owner}</TableCell>
         </TableRow>
     )
 })

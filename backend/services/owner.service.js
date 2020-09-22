@@ -3,25 +3,24 @@ const Owner = db.owners;
 const { sequelize } = db;
 const { Op } = db.Sequelize;
 
-const createOwner = async (firstName, lastName) => {
+const createOwner = async (name) => {
     const [newOwner, didCreated] = await Owner.findOrCreate({
-        where: { firstName, lastName },
-        defaults: { firstName, lastName }
+        where: { name },
+        defaults: { name }
     });
     return newOwner;
 }
 
-const getOwnersWithSearch = async (firstName, lastName) => {
+const getOwnersWithSearch = async (name) => {
     const owners = await Owner.findAll({
         attributes: [
             "id", 
-            [sequelize.fn('CONCAT', sequelize.col('firstName'), ' ', sequelize.col('lastName')), 'name']
+            "name"
+           // [sequelize.fn('CONCAT', sequelize.col('firstName'), ' ', sequelize.col('lastName')), 'name']
         ],
         where: {
-            [Op.or]: [
-                { firstName: { [Op.like]: `${firstName}%` } },
-                { lastName: { [Op.like]: `${lastName}%` } }
-            ] 
+             name: { [Op.like]: `${name}%` } 
+ 
         },
         limit: 10
     })

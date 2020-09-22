@@ -1,13 +1,13 @@
 import React from 'react';
 import { Button } from '@material-ui/core';
-import { useUpdateStyle } from '../../styles/style';
+import { useActionsStyle } from '../../styles/style';
 
 interface ActionButtonType {
     text: string,
     onClick?: (t: any) => void
 }
 const ActionButton: React.FC<ActionButtonType> = ({ text, onClick }) => {
-    const styles = useUpdateStyle();
+    const styles = useActionsStyle();
     return (
         <Button className={styles.actionButton} onClick={onClick}>{text}</Button>
     )

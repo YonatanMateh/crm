@@ -10,6 +10,8 @@ import { useDebounce } from '../../hooks/use-debounce';
 import ClientPopOver from './clientPopOver.component';
 import ClientsTable from './clientsTable.component';
 import Loader from '../loader.component';
+import { useHasChanged } from '../../hooks/previousState';
+import { Client } from '../../stores/Client';
 
 const Clients: React.FC = observer(() => {
   const query = useClientsQuery();
@@ -22,9 +24,9 @@ const Clients: React.FC = observer(() => {
   const [searchText, setSearchText] = useState<string>(query.searchText || "");
   const [searchBy, setSearchBy] = useState<string>(query.searchBy || "Name");
   const debouncedSearchText = useDebounce(searchText, 500);
-
+  const [hasSearchTextChanged, prevSearchText] = useHasChanged(debouncedSearchText);
   const searchFields = ["Name", "Sold", "Email", "Owner", "Country"]
-
+  const [clients, setClients] = useState<Client[]>([])
   const handleChangePage = (event: unknown, newPage: number) => {
     setCurrentPage(newPage);
   };
@@ -37,14 +39,21 @@ const Clients: React.FC = observer(() => {
   const loadData = async () => {
     setLoading(true)
     await clientsStore.getClientsWithPagination(query)
+    setClients(clientsStore.clients)
     setLoading(false);
   }
 
   const updateQuery = () => {
-    let queries = `?page=${currentPage}&size=${rowsPerPage}`
+    let queries = `?page=${currentPage}&size=${rowsPerPage}`;
     if (searchText !== "") {
-      queries = `?page=${0}&size=${rowsPerPage}&searchText=${searchText}&searchBy=${searchBy}`
+      if (searchText !== prevSearchText) {
+        setCurrentPage(0)
+      }
+      queries += `&searchText=${searchText}&searchBy=${searchBy}`
+    } else if (hasSearchTextChanged) {
+      setCurrentPage(0)
     }
+
     history.push({
       pathname: "",
       search: queries
@@ -64,7 +73,13 @@ const Clients: React.FC = observer(() => {
 
   useEffect(() => {
     updateQuery()
-  }, [currentPage, rowsPerPage, searchBy, debouncedSearchText])
+  }, [currentPage, rowsPerPage, debouncedSearchText])
+
+
+  useEffect(() => {
+    setCurrentPage(0)
+    updateQuery()
+  }, [searchBy]);
 
   return (
     <Paper className={classes.container} elevation={0}>
@@ -90,7 +105,7 @@ const Clients: React.FC = observer(() => {
         />
       </Paper>
       <Loader isLoading={isLoading}>
-        <ClientsTable clients={clientsStore.clients} />
+        <ClientsTable clients={clients} />
       </Loader>
       <ClientPopOver />
     </Paper>

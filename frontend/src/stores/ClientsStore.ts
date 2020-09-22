@@ -21,18 +21,19 @@ class ClientsStore {
 
     @action addClient(client: any) {
         const { id, firstName, lastName, email, firstContact,
-            sold, owner, countryName, email_type, countryId } = client;
+            sold, ownerName, countryName, email_type, countryId } = client;
         const newClient = new Client(id, firstName, lastName, email, firstContact,
-            email_type, sold, owner, countryName, countryId);
+            email_type, sold, ownerName, countryName, countryId);
         this.clients.push(newClient)
     }
 
     @action getClientsWithPagination = async (query: IQuery) => {
         const { data } = await axios.get(this.getUrlWithQueryParams(query));
-        this.totalClients = data.totalItems;
-        this.totalPages = data.totalPages;
-        this.clients = [];
-        data.clients.forEach((c: any) => this.addClient(c));
+            this.totalClients = data.totalItems;
+            this.totalPages = data.totalPages;
+            this.clients = [];
+            
+            data.clients.forEach((c: any) => this.addClient(c));
     }
 
     @action updateCountryLocally = (countryId: number, newCountryName: string) => {

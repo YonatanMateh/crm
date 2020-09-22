@@ -45,24 +45,25 @@ const updateClientAndCountry = async (client) => {
     }
 }
 
+// const createClient = async client => {
+//     const [newClient, didCreated] = await Client.findOrCreate({
+//         where: {
+//             firstName: client.firstName,
+//             lastName: client.lastName
+//         },
+//         defaults: {
+//             firstName: client.firstName,
+//             lastName: client.lastName,
+//             email: client.email,
+//             countryId: client.countryId,
+//             ownerId: client.ownerId
+//         }
+//     });
+//     return newClient;
+// }
 const createClient = async client => {
-    const [newClient, didCreated] = await Client.findOrCreate({
-        where: {
-            firstName: client.firstName,
-            lastName: client.lastName
-        },
-        defaults: {
-            firstName: client.firstName,
-            lastName: client.lastName,
-            email: client.email,
-            countryId: client.countryId,
-            ownerId: client.ownerId
-        }
-    });
-    return newClient;
-}
-const createClientForDataMigration = async client => {
-    const owner = await ownerService.createOwner(client.owner.firstName, client.owner.lastName);
+    // debugger
+    const owner = await ownerService.createOwner(client.owner);
     const emailType = client.emailType ? await emailTypeService.createEmailType(client.emailType) : { id: null }
     const country = await countryService.createCountry(client.country);
 
@@ -102,6 +103,6 @@ module.exports = {
     createClient,
     updateClientAndCountry,
     updateClientField,
-    createClientForDataMigration,
+    // createClientForDataMigration,
     updateClientForField
 }

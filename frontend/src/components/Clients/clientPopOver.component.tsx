@@ -1,20 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Modal, Card, Button, CardActions, CardContent, Grid, Input, IconButton } from '@material-ui/core';
+import { Modal, Card, Button, CardActions, CardContent, Grid, Input, IconButton } from '@material-ui/core';
 import { observer } from "mobx-react";
 import { CancelPresentationOutlined } from '@material-ui/icons';
 import { useStore } from '../../stores/stores';
 import { useClientsStyle } from '../../styles/style';
-import { clientKeysType, GridFormProps } from '../../interfaces/popOver';
-
-const GridForm: React.FC<GridFormProps> = ({ classes, clientKey, value, inputChange }) => {
-  const capitalized = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
-  return (
-    <Grid item xs={12} justify="space-between" container alignItems="center">
-      <Typography component="span" className={classes.popOverText}>{capitalized(clientKey)}:</Typography>
-      <Input onChange={(e) => inputChange(clientKey, e.target.value)} value={value} classes={{ underline: classes.underline }} className={classes.popOverText} color="secondary" />
-    </Grid>
-  )
-}
+import { clientKeysType } from '../../interfaces/popOver';
+import { GridForm } from '../GridForm';
+import UpdateButton from '../UpdateButton';
 
 const ClientPopOver: React.FC = observer(() => {
   const { popOverStore } = useStore();
@@ -26,14 +18,14 @@ const ClientPopOver: React.FC = observer(() => {
   });
 
   const classes = useClientsStyle();
-  const keys: clientKeysType[] = ['firstName', 'lastName', 'country'];
+  const keys: string[] = ['firstName', 'lastName', 'country'];
   const BackdropComponent = () => (
     <div className={classes.backDrop} onClick={popOverStore.closePopOver}></div>
   )
 
-  const inputChanged = (key: clientKeysType, value: string) => {
+  const inputChanged = (key: string, value: string) => {
     const updatedClient = { ...client };
-    updatedClient[key] = value;
+    updatedClient[key as clientKeysType] = value;
     setClient(updatedClient)
   }
 
@@ -62,14 +54,14 @@ const ClientPopOver: React.FC = observer(() => {
           <Grid container direction="row" spacing={2}
             justify="space-around"
             alignItems="center">
-            {keys.map((d: clientKeysType) => (
-              <GridForm key={d} classes={classes} value={client[d]} clientKey={d} inputChange={inputChanged} />
+            {keys.map((d: string) => (
+              <GridForm textColor={"white"} key={d} inputKey={d} value={client[d as clientKeysType]} inputChange={inputChanged} />
             ))}
           </Grid>
         </CardContent>
 
         <CardActions>
-          <Button onClick={update} size="medium" className={classes.updateBtn} fullWidth disableFocusRipple={true} disableElevation>Update</Button>
+          <UpdateButton onClick={update} text={"Update"} />
         </CardActions>
       </Card>
     </Modal>

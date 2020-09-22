@@ -1,13 +1,10 @@
 export type clientKeysType =  'firstName' | 'lastName' | 'country';
-export interface StyleClass {
-  [name: string] : string
-}
 export interface InputFunc {
-  (key: clientKeysType, value: string): void;
+  (key: string, value: string): void;
 }
 export interface GridFormProps {
-  classes: StyleClass,
-  clientKey: clientKeysType,
+  inputKey: string,
   value: string | number,
+  textColor: string,
   inputChange: InputFunc
 }

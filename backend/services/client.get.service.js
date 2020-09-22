@@ -39,10 +39,7 @@ const getCondition = (searchBy, searchText) => {
                 break;
             case "Owner":
                 ownerCondition = {
-                    [Op.or]: [
-                        { firstName: { [Op.like]: `%${searchText}%` } },
-                        { lastName: { [Op.like]: `%${searchText}%` } }
-                    ]
+                     name: { [Op.like]: `%${searchText}%` } 
                 }
                 break;
                 case "Email": 
@@ -84,12 +81,14 @@ const getClients = async (page, size, searchBy, searchText) => {
             "countryId",
             "email",
             [db.Sequelize.col("country.name"), "countryName"],
-            [db.Sequelize.col("emailType.type"), "email_type"]
+            [db.Sequelize.col("emailType.type"), "email_type"],
+            [db.Sequelize.col("owner.name"), "ownerName"]
+
         ],
         include: [
             { model: db.countries, attributes: [], where: countryCondition },
             { model: db.emailTypes, attributes: [], where: emailCondition },
-            { model: db.owners, attributes: ["firstName", "lastName"], where: ownerCondition },
+            { model: db.owners, attributes: [], where: ownerCondition },
         ],
         nested: true,
         order: [[sequelize.col('firstName'), "ASC"]]

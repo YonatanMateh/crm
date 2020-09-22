@@ -60,7 +60,12 @@ const clientsNames = asyncError(async (req, res, next) => {
     const lastName = req.query.l;
     const data = await getClientService.clientsNames(firstName, lastName);
     res.send(data)
-})
+});
+
+const createClient = asyncError(async (req, res, next) => {
+    await updateClientService.createClient(req.body);
+    res.end();
+});
 
 module.exports = {
     getClients,
@@ -73,5 +78,6 @@ module.exports = {
     countNotSold,
     mostSalesByCountry,
     clientsNames,
-    updateClient
+    updateClient,
+    createClient
 }
