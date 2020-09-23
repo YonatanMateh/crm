@@ -5,6 +5,7 @@ import { NamesType } from "../interfaces/client";
 import { serverUrl } from '../config/generalConfig';
 import { IQuery } from '../interfaces/navigation';
 import axios from 'axios';
+import { INewClient } from '../interfaces/addClient';
 class ClientsStore {
     @observable clients: Client[] = [];
     @observable clientNames: NamesType[] = [];
@@ -19,7 +20,7 @@ class ClientsStore {
         })()
     }
 
-    @action addClient(client: any) {
+    @action addClientToArray(client: any) {
         const { id, firstName, lastName, email, firstContact,
             sold, ownerName, countryName, email_type, countryId } = client;
         const newClient = new Client(id, firstName, lastName, email, firstContact,
@@ -29,11 +30,11 @@ class ClientsStore {
 
     @action getClientsWithPagination = async (query: IQuery) => {
         const { data } = await axios.get(this.getUrlWithQueryParams(query));
-            this.totalClients = data.totalItems;
-            this.totalPages = data.totalPages;
-            this.clients = [];
-            
-            data.clients.forEach((c: any) => this.addClient(c));
+        this.totalClients = data.totalItems;
+        this.totalPages = data.totalPages;
+        this.clients = [];
+
+        data.clients.forEach((c: any) => this.addClientToArray(c));
     }
 
     @action updateCountryLocally = (countryId: number, newCountryName: string) => {
@@ -64,6 +65,10 @@ class ClientsStore {
     @action getEmailTypes = async () => {
         const { data } = await axios.get(`${serverUrl}/api/emailType`);
         this.emails = data
+    }
+
+    @action addClient = async (newClient: INewClient) => {
+        await axios.post(`${serverUrl}/api/clients`, newClient);
     }
 
     private getUrlWithQueryParams = (query: IQuery): string => {

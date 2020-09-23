@@ -4,25 +4,32 @@ import { useActionsStyle } from '../../styles/style';
 import { GridForm } from '../GridForm';
 import UpdateButton from '../UpdateButton';
 import { INewClient } from '../../interfaces/addClient';
+import { useStore } from '../../stores/stores';
 
 const AddClient = (props: any) => {
     const styles = useActionsStyle();
-    const keys = ["first Name", "last Name", "country", "owner"];
+    const keys = ["first Name", "last Name", "email", "country", "owner"];
+    const { clientsStore } = useStore();
+
     const [client, setClient] = useState<INewClient>({
         firstName: '',
         lastName: '',
+        email: '',
         country: '',
         owner: ''
     })
     const inputChanged = (key: string, value: string) => {
         const currentClient = { ...client };
-        currentClient[removeKeySpaces(key)] = value;
+        currentClient[removeKeySpaces(key)] = value.trim();
         setClient(currentClient)
     }
 
     const addClient = () => {
-        console.log('add client', client);
-        
+        const { firstName, lastName, owner, email, country } = client
+        if (firstName && lastName && owner && email && country) {
+            clientsStore.addClient(client);
+        }
+
     }
 
     const removeKeySpaces = (str: string) => str.replace(/\s/g, '') as keyof INewClient;
@@ -35,7 +42,7 @@ const AddClient = (props: any) => {
                     className={styles.grid}
                     justify="flex-start">
                     {keys.map((d: string) =>
-                    <Grid item xs={12} key={d}>
+                        <Grid item xs={12} key={d}>
                             <GridForm
                                 inputKey={d}
                                 value={client[removeKeySpaces(d)]}
@@ -43,7 +50,7 @@ const AddClient = (props: any) => {
                                 inputChange={inputChanged}>
                             </GridForm>
                         </Grid>
-                    
+
                     )}
                     <UpdateButton onClick={addClient} text={"Add Client"} />
                 </Grid>

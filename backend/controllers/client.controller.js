@@ -63,8 +63,8 @@ const clientsNames = asyncError(async (req, res, next) => {
 });
 
 const createClient = asyncError(async (req, res, next) => {
-    await updateClientService.createClient(req.body);
-    res.end();
+   const newClient = await updateClientService.createClient(req.body);
+    res.send(newClient);
 });
 
 module.exports = {

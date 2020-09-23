@@ -24,8 +24,9 @@ const UpdateButton: React.FC<UpdateButtonType> = ({ text, onClick }) => {
             size="medium"
             className={classes.btn}
             fullWidth
-            disableFocusRipple={true}
-            disableElevation>{text}</Button>
+            // disableFocusRipple={true}
+            // disableElevation
+            >{text}</Button>
     )
 }
 

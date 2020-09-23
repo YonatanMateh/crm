@@ -3,7 +3,6 @@ const ownerService = require('./owner.service');
 const countryService = require('./country.service');
 const emailTypeService = require('./emailType.service');
 const { updateCountry } = require('./country.service');
-const { sequelize } = require('../db/connection');
 const AppError = require('../utils/AppError');
 
 const Client = db.clients;
@@ -45,24 +44,7 @@ const updateClientAndCountry = async (client) => {
     }
 }
 
-// const createClient = async client => {
-//     const [newClient, didCreated] = await Client.findOrCreate({
-//         where: {
-//             firstName: client.firstName,
-//             lastName: client.lastName
-//         },
-//         defaults: {
-//             firstName: client.firstName,
-//             lastName: client.lastName,
-//             email: client.email,
-//             countryId: client.countryId,
-//             ownerId: client.ownerId
-//         }
-//     });
-//     return newClient;
-// }
 const createClient = async client => {
-    // debugger
     const owner = await ownerService.createOwner(client.owner);
     const emailType = client.emailType ? await emailTypeService.createEmailType(client.emailType) : { id: null }
     const country = await countryService.createCountry(client.country);
@@ -88,8 +70,6 @@ const createClient = async client => {
 
 const updateClientForField = async(clientId, fieldName, text) => {
     const client = await Client.findByPk(clientId);
-    // client[fieldName] = text;
-    console.log(client);
     await client.update({
         [fieldName]: text
     });
