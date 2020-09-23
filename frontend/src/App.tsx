@@ -3,8 +3,8 @@ import { observer } from "mobx-react";
 import { ThemeProvider } from '@material-ui/core';
 
 import { theme } from './theme/theme';
-import NavigationBar from './components/navigationBar.component';
-import Routes from './components/routes.component';
+import NavigationBar from './components/NavigationBar.component';
+import Routes from './components/Routes.component';
 
 const App = observer(() => {
   return (

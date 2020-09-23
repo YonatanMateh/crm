@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const routes = require('./routes/index');
 const config = require('./config/index');
 const db = require('./db/connection');
@@ -10,8 +11,15 @@ const clientsMigration = require('./utils/clientsMigration');
 
 const app = express();
 
-if(config.environment === "development") {
-    app.use(allowCors);
+if(config.environment !== "production") {
+    const corsOptions = {
+        origin: [
+            'http://127.0.0.1:3000',
+            'http://localhost:3000'
+        ],
+        credentials: true
+    };
+    app.use(cors(corsOptions));
 }
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));

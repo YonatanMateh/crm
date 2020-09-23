@@ -130,10 +130,13 @@ const Update: React.FC = observer(() => {
                     {ownerForm}
                     {emailTypeForm}
                     <Grid item xs={12} justify="flex-start" container alignItems="center">
-                        <Grid item xs={4}> <Typography component="div">Declare Sale! </Typography></Grid>
                         <Grid item xs={4}>
+                            <Typography component="div">Declare Sale!</Typography>
                         </Grid>
-                        <Grid item xs={2}><ActionButton text="Declare" onClick={declareSale} /></Grid>
+                        <Grid item xs={4} />
+                        <Grid item xs={2}>
+                            <ActionButton text="Declare" onClick={declareSale} />
+                        </Grid>
                     </Grid>
                 </Grid>
             </Grid>

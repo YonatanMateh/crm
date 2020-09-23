@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Grid, Input, Paper, TextField, Typography } from '@material-ui/core';
+import { Grid, Paper, Typography } from '@material-ui/core';
 import { useActionsStyle } from '../../styles/style';
 import { GridForm } from '../GridForm';
 import UpdateButton from '../UpdateButton';
 import { INewClient } from '../../interfaces/addClient';
 import { useStore } from '../../stores/stores';
 
-const AddClient = (props: any) => {
+const AddClient = () => {
     const styles = useActionsStyle();
     const keys = ["first Name", "last Name", "email", "country", "owner"];
     const { clientsStore } = useStore();
@@ -54,9 +54,7 @@ const AddClient = (props: any) => {
                     )}
                     <UpdateButton onClick={addClient} text={"Add Client"} />
                 </Grid>
-
             </form>
-
         </Paper>
     )
 }

@@ -1,8 +1,7 @@
 import { stores } from './stores';
 import { ClientValue } from "../interfaces/client";
 import { observable, action } from 'mobx';
-import { serverUrl } from '../config/generalConfig';
-import axios from 'axios';
+import ClientsService from '../services/ClientsService';
 
 export class Client implements ClientValue {
     readonly id: string;
@@ -37,18 +36,17 @@ export class Client implements ClientValue {
             lastName,
             country
         }
-
-        const { data }: { data: ClientValue } = await axios.put(`${serverUrl}/api/clients/nameAndCountry`, clientToUpdate);
-        if(data.country !== this.country) {
+        const data = await ClientsService.updateClient(clientToUpdate)
+        if (data.country !== this.country) {
             this.updateAllCountries(data.countryId, data.country)
         }
         Object.keys(this).forEach((key: string) => {
-            if (key !== 'id' && data[key as keyof ClientValue]) {
-                this[key as keyof this] = data[key as keyof ClientValue]
+            if (key !== 'id' && data[key]) {
+                this[key as keyof this] = data[key]
             }
         })
     }
-    
+
     private updateAllCountries = (countryId: number, newCountryName: string) => {
         const clients = stores.clientsStore
         clients.updateCountryLocally(countryId, newCountryName)

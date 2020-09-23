@@ -9,7 +9,11 @@ interface ActionButtonType {
 const ActionButton: React.FC<ActionButtonType> = ({ text, onClick }) => {
     const styles = useActionsStyle();
     return (
-        <Button className={styles.actionButton} onClick={onClick}>{text}</Button>
+        <Button
+            className={styles.actionButton}
+            onClick={onClick}>
+            {text}
+        </Button>
     )
 }
 

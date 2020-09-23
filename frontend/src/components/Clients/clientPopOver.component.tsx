@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Card, Button, CardActions, CardContent, Grid, Input, IconButton } from '@material-ui/core';
+import { Modal, Card, CardActions, CardContent, Grid, IconButton } from '@material-ui/core';
 import { observer } from "mobx-react";
 import { CancelPresentationOutlined } from '@material-ui/icons';
 import { useStore } from '../../stores/stores';
@@ -18,7 +18,7 @@ const ClientPopOver: React.FC = observer(() => {
   });
 
   const classes = useClientsStyle();
-  const keys: string[] = ['firstName', 'lastName', 'country'];
+  const keys = ['firstName', 'lastName', 'country'];
   const BackdropComponent = () => (
     <div className={classes.backDrop} onClick={popOverStore.closePopOver}></div>
   )
@@ -45,7 +45,8 @@ const ClientPopOver: React.FC = observer(() => {
     <Modal
       BackdropComponent={BackdropComponent}
       className={classes.modal}
-      open={popOverStore.isOpen}>
+      open={popOverStore.isOpen}
+    >
       <Card className={classes.paper}>
         <CardContent className={classes.cardContext}>
           <IconButton size="small" color="secondary" onClick={() => popOverStore.closePopOver()}>
@@ -55,7 +56,13 @@ const ClientPopOver: React.FC = observer(() => {
             justify="space-around"
             alignItems="center">
             {keys.map((d: string) => (
-              <GridForm textColor={"white"} key={d} inputKey={d} value={client[d as clientKeysType]} inputChange={inputChanged} />
+              <GridForm
+                key={d}
+                textColor={"white"}
+                inputKey={d}
+                value={client[d as clientKeysType]}
+                inputChange={inputChanged}
+              />
             ))}
           </Grid>
         </CardContent>

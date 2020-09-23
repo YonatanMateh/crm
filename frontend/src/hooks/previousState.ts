@@ -9,9 +9,9 @@ const usePrevious = <T>(value: T): T | undefined => {
 };
 
 
-const useHasChanged= (val: any) => {
-    const prevVal = usePrevious(val)
-    return [prevVal !== val, prevVal]
+const useHasChanged = (val: any) => {
+  const prevVal = usePrevious(val)
+  return [prevVal !== val, prevVal]
 }
 
-export {useHasChanged};
+export { useHasChanged }

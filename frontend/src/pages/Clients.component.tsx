@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import Paper from '@material-ui/core/Paper';
-import { TablePagination, TextField, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import { TablePagination, TextField, FormControl, InputLabel, Select, MenuItem, Paper } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { observer } from 'mobx-react';
-import { useStore } from '../../stores/stores';
-import { useClientsStyle } from '../../styles/style';
-import { useClientsQuery } from '../../hooks/urlNavigation';
-import { useDebounce } from '../../hooks/use-debounce';
-import ClientPopOver from './clientPopOver.component';
-import ClientsTable from './clientsTable.component';
-import Loader from '../loader.component';
-import { useHasChanged } from '../../hooks/previousState';
-import { Client } from '../../stores/Client';
+
+import { useStore } from '../stores/stores';
+import { Client } from '../stores/Client';
+
+import { useClientsQuery } from '../hooks/urlNavigation';
+import { useHasChanged } from '../hooks/previousState';
+import { useDebounce } from '../hooks/use-debounce';
+
+import ClientPopOver from '../components/clients/ClientPopOver.component';
+import ClientsTable from '../components/clients/ClientsTable.component';
+import Loader from '../components/Loader.component';
+
+import { useClientsStyle } from '../styles/style';
 
 const Clients: React.FC = observer(() => {
   const query = useClientsQuery();
@@ -23,10 +26,12 @@ const Clients: React.FC = observer(() => {
   const [isLoading, setLoading] = useState<boolean>(false);
   const [searchText, setSearchText] = useState<string>(query.searchText || "");
   const [searchBy, setSearchBy] = useState<string>(query.searchBy || "Name");
+  const [clients, setClients] = useState<Client[]>([]);
+
   const debouncedSearchText = useDebounce(searchText, 500);
   const [hasSearchTextChanged, prevSearchText] = useHasChanged(debouncedSearchText);
-  const searchFields = ["Name", "Sold", "Email", "Owner", "Country"]
-  const [clients, setClients] = useState<Client[]>([])
+  const searchFields = ["Name", "Sold", "Email", "Owner", "Country"];
+
   const handleChangePage = (event: unknown, newPage: number) => {
     setCurrentPage(newPage);
   };

@@ -27,7 +27,9 @@ const UpdateForm: React.FC<IUpdateRow> = observer((props) => {
 
     return (
         <Grid item xs={12} justify="flex-start" container alignItems="center">
-            <Grid item xs={4}><Typography component="div">{title}</Typography></Grid>
+            <Grid item xs={4}>
+                <Typography component="div">{title}</Typography>
+            </Grid>
             <Grid item xs={4}>
                 <Autocomplete
                     classes={autocompleteStyle}
@@ -48,8 +50,11 @@ const UpdateForm: React.FC<IUpdateRow> = observer((props) => {
                 />
             </Grid>
             {actionBtnText ?
-                <Grid item xs={2}><ActionButton text={actionBtnText} onClick={async() => await update(IDS[name])}/></Grid>
-                : null}
+                    <Grid item xs={2}>
+                        <ActionButton text={actionBtnText} onClick={async () => await update(IDS[name])} />
+                    </Grid>
+                    : null}
+
         </Grid>
     );
 

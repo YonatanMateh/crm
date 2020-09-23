@@ -3,15 +3,17 @@ import React from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import { Check, Remove } from '@material-ui/icons';
+import { observer } from 'mobx-react';
+
 import { useStore } from '../../stores/stores';
 import { Client } from '../../stores/Client';
-import { observer } from 'mobx-react';
 interface T {
-    client: Client 
+    client: Client
 }
+
 const ClientCell: React.FC<T> = observer((props) => {
     const { popOverStore } = useStore();
-    const {client} = props
+    const { client } = props
     const rowClicked = () => {
         popOverStore.openPopOver(props.client)
     }
