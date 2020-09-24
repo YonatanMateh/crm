@@ -62,8 +62,10 @@ export const useClientsStyle = makeStyles({
 
 export const useActionsStyle = makeStyles({
   container: {
-    backgroundColor: "#ecf0f1",
-    padding: '25px'
+    backgroundColor: '#ecf0f1',
+    paddingLeft: '25px',
+    paddingBottom: '10px',
+    paddingTop: '10px'
   },
   grid: {
     marginTop: '10px'

@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Grid, Paper, Typography } from '@material-ui/core';
 import { useActionsStyle } from '../../styles/style';
 import { GridForm } from '../GridForm';
 import UpdateButton from '../UpdateButton';
 import { INewClient } from '../../interfaces/addClient';
 import { useStore } from '../../stores/stores';
+import { IMessage, IMessageProp } from '../MessageHandler';
 
-const AddClient = () => {
+const AddClient: React.FC<IMessageProp> = (props) => {
     const styles = useActionsStyle();
     const keys = ["first Name", "last Name", "email", "country", "owner"];
     const { clientsStore } = useStore();
@@ -17,20 +18,52 @@ const AddClient = () => {
         email: '',
         country: '',
         owner: ''
-    })
+    });
+
+    const [message, setMessage] = useState<IMessage>({
+        type: 'error',
+        text: ''
+    });
+
     const inputChanged = (key: string, value: string) => {
         const currentClient = { ...client };
         currentClient[removeKeySpaces(key)] = value.trim();
         setClient(currentClient)
     }
 
-    const addClient = () => {
+    const addClient = async () => {
         const { firstName, lastName, owner, email, country } = client
         if (firstName && lastName && owner && email && country) {
-            clientsStore.addClient(client);
+            try {
+                await clientsStore.addClient(client);
+                setMessage({
+                    text: 'Client was added successfully',
+                    type: 'success'
+                })
+            } catch (error) {
+                setMessage({
+                    text: 'Something went wrong, client was not added',
+                    type: 'error'
+                })
+            }
+        } else {
+            setMessage({
+                text: 'It will not work if you not insert text :)',
+                type: 'warning'
+            })
         }
 
     }
+
+    useEffect(() => {
+        if (message.text !== '') {
+          props.handleMessage(message)
+        }
+        setMessage({
+          text: '',
+          type: 'success'
+        })
+      }, [message.text])
 
     const removeKeySpaces = (str: string) => str.replace(/\s/g, '') as keyof INewClient;
     return (

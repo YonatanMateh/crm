@@ -44,9 +44,7 @@ class ClientsStore {
     }
 
     @action updateClientField = async (id: number, field: keyof IIds, text: number | boolean) => {
-        if (text > 0 && id > 0) {
             await ClientsService.updateClientField(id, field, text)
-        }
     }
 
     @action getClientsNames = async (searchText: string) => {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TablePagination, TextField, FormControl, InputLabel, Select, MenuItem, Paper } from '@material-ui/core';
+
 import { useHistory } from 'react-router-dom';
 import { observer } from 'mobx-react';
 
@@ -15,6 +16,7 @@ import ClientsTable from '../components/clients/ClientsTable.component';
 import Loader from '../components/Loader.component';
 
 import { useClientsStyle } from '../styles/style';
+import { IMessage, MessageHandler } from '../components/MessageHandler';
 
 const Clients: React.FC = observer(() => {
   const query = useClientsQuery();
@@ -27,7 +29,10 @@ const Clients: React.FC = observer(() => {
   const [searchText, setSearchText] = useState<string>(query.searchText || "");
   const [searchBy, setSearchBy] = useState<string>(query.searchBy || "Name");
   const [clients, setClients] = useState<Client[]>([]);
-
+  const [message, setMessage] = useState<IMessage>({
+    type: 'error',
+    text: ''
+  })
   const debouncedSearchText = useDebounce(searchText, 500);
   const [hasSearchTextChanged, prevSearchText] = useHasChanged(debouncedSearchText);
   const searchFields = ["Name", "Sold", "Email", "Owner", "Country"];
@@ -42,9 +47,16 @@ const Clients: React.FC = observer(() => {
   };
 
   const loadData = async () => {
-    setLoading(true)
-    await clientsStore.getClientsWithPagination(query)
-    setClients(clientsStore.clients)
+    setLoading(true);
+    try {
+      await clientsStore.getClientsWithPagination(query)
+      setClients(clientsStore.clients)
+    } catch (error) {
+      setMessage({
+        text: error.message,
+        type: "error"
+      })
+    }
     setLoading(false);
   }
 
@@ -86,6 +98,10 @@ const Clients: React.FC = observer(() => {
     updateQuery()
   }, [searchBy]);
 
+  const handleMessage = (newMessage: IMessage) => {
+    setMessage(newMessage);
+  }
+
   return (
     <Paper className={classes.container} elevation={0}>
       <Paper square={true} elevation={0} className={classes.tableNav}>
@@ -109,12 +125,15 @@ const Clients: React.FC = observer(() => {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Paper>
+      <MessageHandler type={message.type} text={message.text} onClose={() => setMessage({ type: 'success', text: '' })} />
       <Loader isLoading={isLoading}>
         <ClientsTable clients={clients} />
       </Loader>
-      <ClientPopOver />
+      <ClientPopOver handleMessage={handleMessage} />
+
     </Paper>
   );
 })
 
 export default Clients;
+

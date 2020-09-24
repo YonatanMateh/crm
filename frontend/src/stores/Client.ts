@@ -44,7 +44,8 @@ export class Client implements ClientValue {
             if (key !== 'id' && data[key]) {
                 this[key as keyof this] = data[key]
             }
-        })
+        });
+        return true;
     }
 
     private updateAllCountries = (countryId: number, newCountryName: string) => {

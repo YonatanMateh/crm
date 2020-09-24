@@ -32,8 +32,14 @@ const request = async (endpoint: string, method: Method = 'get', data?: any) => 
         return res.data;
     } catch (err) {
         console.error('Had Issues talking with the server');
-        console.error(err);
-        throw err;
+        console.error(err.response);
+        let message = "Had Issues talking with the server :( try to refresh the page!";
+        switch (err?.response?.status) {
+            case 404:
+                message = "404! We where not able to find what you ask for :("
+                break;
+        }
+        throw new Error(message);
     }
 }
 

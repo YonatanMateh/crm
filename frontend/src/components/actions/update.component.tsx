@@ -1,16 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Typography, Paper, Grid } from '@material-ui/core';
 import { useActionsStyle } from '../../styles/style';
 import { useStore } from '../../stores/stores';
 import { observer } from 'mobx-react';
-import UpdateForm from './UpdateForm.component';
 import ActionButton from './ActionButton';
-import { NAMES, IDS } from '../../config/actions';
+import { IDS } from '../../config/actions';
 import { IIds, IField } from '../../interfaces/action';
+import { IMessage, IMessageProp } from '../MessageHandler';
+import UpdateForms from './UpdateForms.component';
 
-
-const Update: React.FC = observer(() => {
+const Update: React.FC<IMessageProp> = observer((props) => {
     const [fields, setFields] = useState<IField>({
         client: '',
         owner: '',
@@ -23,6 +23,12 @@ const Update: React.FC = observer(() => {
         emailTypeId: -1,
         sold: false
     })
+
+    const [message, setMessage] = useState<IMessage>({
+        type: 'error',
+        text: ''
+    });
+
     const styles = useActionsStyle();
     const { clientsStore, ownerStore } = useStore();
 
@@ -41,7 +47,8 @@ const Update: React.FC = observer(() => {
             if (fields.owner === '') {
                 updateIds(-1, IDS.owner)
             }
-            await ownerStore.getOwners(fields.owner)
+            await ownerStore.getOwners(fields.owner);
+
         })()
     }, [fields.owner])
 
@@ -58,6 +65,16 @@ const Update: React.FC = observer(() => {
             }
         })()
     }, [ids.sold])
+
+    useEffect(() => {
+        if (message.text !== '') {
+            props.handleMessage(message)
+        }
+        setMessage({
+            text: '',
+            type: 'success'
+        })
+    }, [message.text])
 
     const updateField = (value: string, name: keyof IField) => {
         const prev = { ...fields };
@@ -76,48 +93,47 @@ const Update: React.FC = observer(() => {
     }
 
     const updateClient = async (key: keyof IIds) => {
-        await clientsStore.updateClientField(ids.clientId, key, ids[key])
+        if (ids.clientId < 0) {
+            setMessage({
+                text: 'You need to select client...',
+                type: 'warning'
+            })
+        } else if (ids[key] < 0) {
+            setMessage({
+                text: 'It will not work if you not insert text :)',
+                type: 'warning'
+            })
+        } else {
+            try {
+                await clientsStore.updateClientField(ids.clientId, key, ids[key])
+                setMessage({
+                    text: 'Update successfully',
+                    type: 'success'
+                })
+            } catch (error) {
+                setMessage({
+                    text: 'Something went wrong, client was not updated',
+                    type: 'error'
+                })
+            }
+        }
     }
 
     const declareSale = async () => {
         if (ids.clientId > 0) {
             updateIds(true, IDS.sold)
+        } else {
+            setMessage({
+                text: 'You need to select client...',
+                type: 'warning'
+            })
         }
     }
 
-    const methods = {
-        handleChange: updateField,
-        rowClicked: updateIds,
-        update: updateClient
+    const updateFormsProps = {
+        ids, clientsStore, ownerStore,
+        updateField, updateIds, updateClient
     }
-
-    const clientForm = useMemo(() => {
-        return (<UpdateForm name={NAMES.CLIENT}
-            title={'Client'}
-            placeholder={'Client Name'}
-            data={clientsStore.clientNames}
-            {...methods} />)
-    }, [clientsStore.clientNames]);
-
-    const ownerForm = useMemo(() => {
-        return (<UpdateForm name={NAMES.OWNER}
-            title={'Transfer ownership to:'}
-            placeholder={'Owner'}
-            actionBtnText={'Transfer'}
-            data={ownerStore.owners}
-            {...methods} />)
-    }, [ownerStore.owners, ids])
-
-    const emailTypeForm = useMemo(() => {
-        return (
-            <UpdateForm name={NAMES.EMAILTYPE}
-                title={'Send email:'}
-                placeholder={'Email Type'}
-                actionBtnText={'Send'}
-                data={clientsStore.emails}
-                {...methods} />
-        )
-    }, [clientsStore.emails, ids])
 
     return (
         <Paper className={styles.container} elevation={0}>
@@ -126,9 +142,7 @@ const Update: React.FC = observer(() => {
                 className={styles.grid}
                 justify="flex-start">
                 <Grid item container xs={12} md={8} spacing={2}>
-                    {clientForm}
-                    {ownerForm}
-                    {emailTypeForm}
+                    <UpdateForms {...updateFormsProps} />
                     <Grid item xs={12} justify="flex-start" container alignItems="center">
                         <Grid item xs={4}>
                             <Typography component="div">Declare Sale!</Typography>
