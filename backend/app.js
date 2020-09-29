@@ -5,13 +5,13 @@ const routes = require('./routes/index');
 const config = require('./config/index');
 const db = require('./db/connection');
 const allowCors = require('./middlewares/allowCors');
-const errorHandler = require('./middlewares/errorHandlers');
-const {AppError} = require('./utils/AppError')
+const errorHandler = require('./middlewares/middleware');
+const { AppError } = require('./utils/AppError')
 const clientsMigration = require('./utils/clientsMigration');
 
 const app = express();
 
-if(config.environment !== "production") {
+if (config.environment !== "production") {
     const corsOptions = {
         origin: [
             'http://127.0.0.1:3000',
@@ -22,7 +22,7 @@ if(config.environment !== "production") {
     app.use(cors(corsOptions));
 }
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api', routes);
 app.all('*', (req, res, next) => {
     next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));

@@ -24,10 +24,9 @@ const updateCountry = async (id, name) => {
             } else {
                 throw new AppError("Can't find country id", 500)
             }
-            // const updateCountry = await Country.update({name}, {where: {id}, returning: true});
         }
     } catch (error) {
-        
+        console.error(error)
     }
 }
 

@@ -1,6 +1,5 @@
 const db = require('../db/connection');
 const Owner = db.owners;
-const { sequelize } = db;
 const { Op } = db.Sequelize;
 
 const createOwner = async (name) => {
@@ -14,13 +13,11 @@ const createOwner = async (name) => {
 const getOwnersWithSearch = async (name) => {
     const owners = await Owner.findAll({
         attributes: [
-            "id", 
+            "id",
             "name"
-           // [sequelize.fn('CONCAT', sequelize.col('firstName'), ' ', sequelize.col('lastName')), 'name']
         ],
         where: {
-             name: { [Op.like]: `${name}%` } 
- 
+            name: { [Op.like]: `${name}%` }
         },
         limit: 10
     })

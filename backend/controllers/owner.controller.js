@@ -7,9 +7,6 @@ const getOwnersNames = asyncError(async (req, res, next) => {
     res.send(owners);
 })
 
-
-
-
 module.exports = {
     getOwnersNames
 }

@@ -6,9 +6,6 @@ const getEmailTypes = asyncError(async (req, res, next) => {
     res.send(emailTypes);
 })
 
-
-
-
 module.exports = {
     getEmailTypes
 }

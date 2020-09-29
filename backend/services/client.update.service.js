@@ -7,8 +7,6 @@ const AppError = require('../utils/AppError');
 
 const Client = db.clients;
 
-const { Op } = db.Sequelize;
-
 const updateClientField = async (client, fieldToUpdate) => {
     try {
         const updatedClient = await Client.update({
@@ -35,7 +33,7 @@ const updateClientAndCountry = async (client) => {
                 lastName: client.lastName,
                 countryId: country.id
             });
-            return {...updatedClient.dataValues, country: country.name};
+            return { ...updatedClient.dataValues, country: country.name };
         } else {
             throw new AppError("Can't find client id", 500)
         }
@@ -68,16 +66,13 @@ const createClient = async client => {
     return newClient;
 }
 
-const updateClientForField = async(clientId, fieldName, text) => {
+const updateClientForField = async (clientId, fieldName, text) => {
     const client = await Client.findByPk(clientId);
     await client.update({
         [fieldName]: text
     });
     return client;
-
-
 }
-
 
 module.exports = {
     createClient,
