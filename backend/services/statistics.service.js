@@ -5,12 +5,13 @@ const { Op } = db.Sequelize;
 const { sequelize } = db;
 
 const countOfClientsForMonthYear = async (month, year) => {
-    month = month || new Date().getMonth() + 1
-    year = year || new Date().getFullYear()
+    month = month - 1 || new Date().getMonth();
+    year = year || new Date().getFullYear();
+
     const count = await Client.count({
         where: {
             [Op.and]: [
-                sequelize.where(sequelize.fn('MONTH', sequelize.col('firstContact')), month),
+                sequelize.where(sequelize.fn('MONTH', sequelize.col('firstContact')), month + 1),
                 sequelize.where(sequelize.fn('YEAR', sequelize.col('firstContact')), year)
             ]
         }
@@ -18,7 +19,7 @@ const countOfClientsForMonthYear = async (month, year) => {
     return {
         count,
         monthName: getMonthName(month)
-    };
+    }
 }
 
 const countEmailSent = async () => {
@@ -27,7 +28,7 @@ const countEmailSent = async () => {
             emailTypeId: { [Op.ne]: null }
         }
     });
-    return count
+    return count;
 }
 
 const countOutstandingClients = async () => {
@@ -36,7 +37,7 @@ const countOutstandingClients = async () => {
             sold: { [Op.ne]: true }
         }
     });
-    return count
+    return count;
 }
 
 // note: enable this first 'SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));'
@@ -56,7 +57,7 @@ const getTopEmployees = async () => {
         limit: 3,
         group: ["ownerId"]
     })
-    return clients
+    return clients;
 }
 
 const getSalesByCountry = async (hotSeller = false) => {
@@ -81,8 +82,7 @@ const getSalesByDate = async (date, hasSold = true) => {
         },
         group: ["firstContact"]
     })
-
-    return sales
+    return sales;
 }
 
 module.exports = {

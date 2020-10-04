@@ -5,6 +5,11 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { stores, StoresContext } from "./stores/stores";
 import { BrowserRouter as Router } from "react-router-dom";
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faEnvelope, faChartLine, faUserCircle, faGlobeAmericas } from '@fortawesome/free-solid-svg-icons'
+
+library.add(faEnvelope, faChartLine, faUserCircle, faGlobeAmericas)
+
 
 ReactDOM.render(
   <React.Fragment>
