@@ -3,6 +3,7 @@ const dbConfig = require("../config/db.config.js");
 
 
 const sequelize = new Sequelize(dbConfig.db, dbConfig.user, dbConfig.password, {
+  
   host: dbConfig.host,
   dialect: dbConfig.dialect,
   operatorsAliases: false,

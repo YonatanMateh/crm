@@ -1,6 +1,6 @@
 const dotenv = require('dotenv');
-const envFound = dotenv.config();
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+const path = require('path');
+const envFound = dotenv.config({ path: path.join(__dirname , '../', `/.env.${process.env.NODE_ENV}`)});
 
 if (envFound.error) {
   console.log(envFound.error);

@@ -4,6 +4,7 @@ const cors = require('cors');
 const routes = require('./routes/index');
 const config = require('./config/index');
 const db = require('./db/connection');
+const path = require('path');
 const allowCors = require('./middlewares/allowCors');
 const errorHandler = require('./middlewares/middleware');
 const { AppError } = require('./utils/AppError')
@@ -24,6 +25,15 @@ if (config.environment !== "production") {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api', routes);
+
+if (config.environment === "production") {
+
+    app.use(express.static(path.join(__dirname, 'build')));
+
+    app.get('/*', (req, res) => {
+        res.sendFile(path.join(__dirname, 'build', 'index.html'));
+    });
+}
 app.all('*', (req, res, next) => {
     next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
