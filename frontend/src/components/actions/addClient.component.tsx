@@ -57,13 +57,13 @@ const AddClient: React.FC<IMessageProp> = (props) => {
 
     useEffect(() => {
         if (message.text !== '') {
-          props.handleMessage(message)
+            props.handleMessage(message)
         }
         setMessage({
-          text: '',
-          type: 'success'
+            text: '',
+            type: 'success'
         })
-      }, [message.text])
+    }, [message.text])
 
     const removeKeySpaces = (str: string) => str.replace(/\s/g, '') as keyof INewClient;
     return (
@@ -71,7 +71,7 @@ const AddClient: React.FC<IMessageProp> = (props) => {
             <Typography variant="h6">Add Client</Typography>
             <form noValidate autoComplete="off">
                 <Grid container item direction="row" spacing={2}
-                    xs={5}
+                    xs={4}
                     className={styles.grid}
                     justify="flex-start">
                     {keys.map((d: string) =>
@@ -83,9 +83,12 @@ const AddClient: React.FC<IMessageProp> = (props) => {
                                 inputChange={inputChanged}>
                             </GridForm>
                         </Grid>
-
                     )}
-                    <UpdateButton onClick={addClient} text={"Add Client"} />
+                    <Grid container item xs={12} justify="center">
+                        <Grid item xs={12} md={4}>
+                            <UpdateButton onClick={addClient} text={"Add Client"} />
+                        </Grid>
+                    </Grid>
                 </Grid>
             </form>
         </Paper>
