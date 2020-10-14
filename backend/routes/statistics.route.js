@@ -8,6 +8,7 @@ router.get('/countOutstandingClients', statisticsController.countOutstandingClie
 router.get('/topEmployees', statisticsController.getTopEmployees);
 router.get('/salesByCountry', statisticsController.getSalesByCountry);
 router.get('/salesByDate', statisticsController.getSalesByDate);
+router.get('/clientAcquisition', statisticsController.getClientAcquisition);
 
 module.exports = router;
 

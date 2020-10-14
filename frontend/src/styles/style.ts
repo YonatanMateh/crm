@@ -91,4 +91,11 @@ export const useOptionStyle = makeStyles({
     paddingLeft: 16,
     paddingRight: 16
   }
+});
+
+export const useChartsStyle = makeStyles({
+  header: {
+    marginBottom: '15px',
+    marginLeft: '50px'
+  }
 })

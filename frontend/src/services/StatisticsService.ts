@@ -8,11 +8,11 @@ const statisticsGetRequest = async (endpoint: string) => {
 
 const getNewClientsCount = async (month?: number, year?: number): Promise<IClientsCount> => {
     let query = '';
-    if(month && year) {
+    if (month && year) {
         query = `?month=${month}&year=${year}`;
     }
-   const data:IClientsCount = await statisticsGetRequest(`/countByDate${query}`);
-   return data;
+    const data: IClientsCount = await statisticsGetRequest(`/countByDate${query}`);
+    return data;
 }
 
 const getEmailSentCount = async (): Promise<ICount> => {
@@ -23,13 +23,32 @@ const getOutstandingClientsCount = async (): Promise<ICount> => {
     return await statisticsGetRequest('/countOutstandingClients')
 }
 
-const getHottestCountry = async(): Promise<IHottestCountry> => {
+const getHottestCountry = async (): Promise<IHottestCountry> => {
     return await statisticsGetRequest('/salesByCountry?hotSeller=true')
 }
 
+const getTopEmployees = async () => {
+    return await statisticsGetRequest('/topEmployees');
+}
+
+const getSalesByCountry = async () => {
+    return await statisticsGetRequest('/salesByCountry');
+}
+
+const getSalesByDate = async (date: Date, hasSold = true) => {
+    return await statisticsGetRequest(`/salesByDate?d=${date}&hasSold=${hasSold}`);
+}
+
+const getClientAcquisition = async () => {
+    return await statisticsGetRequest(`/clientAcquisition`);
+}
 export default {
     getNewClientsCount,
     getEmailSentCount,
     getOutstandingClientsCount,
-    getHottestCountry
+    getHottestCountry,
+    getTopEmployees,
+    getSalesByCountry,
+    getSalesByDate,
+    getClientAcquisition
 }

@@ -29,10 +29,17 @@ const getSalesByCountry = asyncError(async (req, res, next) => {
 })
 
 const getSalesByDate = asyncError(async (req, res, next) => {
-    const date = req.query.d;
+    const dateToCompare = req.query.d;
     const hasSold = req.query.hasSold
-    const data = await statisticsService.getSalesByDate(date, hasSold);
-    res.send(data)
+    const {sales, date} = await statisticsService.getSalesByDate(dateToCompare, hasSold);
+    res.send({
+       sales, date
+    })
+})
+
+const getClientAcquisition = asyncError(async (req, res, next) => {
+    const d = await statisticsService.getClientAcquisition()
+res.send(d)
 })
 
 module.exports = {
@@ -41,5 +48,6 @@ module.exports = {
     countOutstandingClients,
     getTopEmployees,
     getSalesByCountry,
-    getSalesByDate
+    getSalesByDate,
+    getClientAcquisition
 }

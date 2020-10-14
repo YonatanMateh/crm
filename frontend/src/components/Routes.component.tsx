@@ -10,10 +10,10 @@ const Routes: React.FC = () => {
             <Route path="/clients" >
                 <Clients />
             </Route>
-            <Route  path="/actions" >
+            <Route path="/actions" >
                 <Actions />
             </Route>
-            <Route  path="/analytics" >
+            <Route path="/analytics" >
                 <Analytics />
             </Route>
         </Switch>

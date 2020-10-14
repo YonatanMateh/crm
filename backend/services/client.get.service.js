@@ -27,17 +27,17 @@ const getCondition = (searchBy, searchText) => {
             case "Name":
                 defaultCondition = {
                     [Op.or]: [
-                        { firstName: { [Op.like]: `%${searchText}%` } },
-                        { lastName: { [Op.like]: `%${searchText}%` } }
+                        { firstName: { [Op.like]: `${searchText}%` } },
+                        { lastName: { [Op.like]: `${searchText}%` } }
                     ]
                 }
                 break;
             case "Country":
-                countryCondition = { name: { [Op.like]: `%${searchText}%` } }
+                countryCondition = { name: { [Op.like]: `${searchText}%` } }
                 break;
             case "Owner":
                 ownerCondition = {
-                    name: { [Op.like]: `%${searchText}%` }
+                    name: { [Op.like]: `${searchText}%` }
                 }
                 break;
             case "Email":

@@ -11,7 +11,7 @@ interface IBadge {
 const useStyle = makeStyles({
     container: {
         backgroundColor: '#ecf0f1',
-        padding: '25px'
+        paddingBottom: '25px'
     },
     icon: {
         color: 'white',
@@ -30,36 +30,31 @@ const Badge = (props: IBadge) => {
     const { data, id } = props;
 
     const colors = ['#2ecc71', '#3598da', '#e84b3b', '#f2c40e']
-    const bgColor = {
-        background: colors[id]
-    }
 
     return (
-        <>
+        <Paper elevation={0} className={classes.container} >
             {data ?
-                <Paper elevation={0} className={classes.container} >
-                    <Grid spacing={3} container direction="row" justify="center" alignItems="center">
-                        <Grid item xs={3} md={4} justify="center" alignItems="center">
-                            <Paper className={classes.icon} style={bgColor}>
-                                <FontAwesomeIcon icon={data?.icon} />
-                            </Paper>
+                <Grid spacing={3} container direction="row" justify="center" alignItems="center">
+                    <Grid item xs={3} md={4}  >
+                        <Paper className={classes.icon} style={{ background: colors[id] }}>
+                            <FontAwesomeIcon icon={data?.icon} />
+                        </Paper>
+                    </Grid>
+                    <Grid item container xs={8} direction="column">
+                        <Grid item xs>
+                            <Typography variant="h4">
+                                {data?.count}
+                            </Typography>
                         </Grid>
-                        <Grid item container xs={8} direction="column">
-                            <Grid item xs>
-                                <Typography variant="h4">
-                                    {data?.count}
-                                </Typography>
-                            </Grid>
-                            <Grid item xs>
-                                <Typography variant="subtitle2" color="textSecondary">
-                                    {data?.description}
-                                </Typography>
-                            </Grid>
+                        <Grid item xs>
+                            <Typography variant="subtitle2" color="textSecondary">
+                                {data?.description}
+                            </Typography>
                         </Grid>
                     </Grid>
-                </Paper>
+                </Grid>
                 : null}
-        </>
+        </Paper>
     )
 }
 
