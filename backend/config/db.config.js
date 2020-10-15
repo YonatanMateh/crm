@@ -1,6 +1,5 @@
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname , '../',`/.env.${process.env.NODE_ENV}`)});
-
 module.exports = {
     host: process.env.HOST,
     user: process.env.USER_NAME,

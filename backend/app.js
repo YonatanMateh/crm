@@ -49,7 +49,7 @@ app.use(errorHandler);
         console.log('Connection has been established successfully.');
         // db.sequelize.sync({ force: true }).then(async() => {
         //     console.log("Drop and re-sync db.");
-        //     await clientsMigration.migrateAllData()
+            // await clientsMigration.migrateAllData()
         //   }).catch(err=> {
         //       console.log(err);
         //   }) ;
